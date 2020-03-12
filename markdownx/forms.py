@@ -29,6 +29,7 @@ class ImageForm(forms.Form):
     # Separately defined as it needs to be
     # processed a text file rather than image.
     _SVG_TYPE = 'image/svg+xml'
+    _SKIP_PROCESS = ('image/gif', _SVG_TYPE)
 
     def save(self, commit=True):
         """
@@ -53,7 +54,7 @@ class ImageForm(forms.Form):
         image_extension = content_type.split('/')[-1].upper()
         image_size = image.size
 
-        if content_type.lower() != self._SVG_TYPE:
+        if content_type.lower() not in self._SKIP_PROCESS:
             # Processing the raster graphic image.
             # Note that vector graphics in SVG format
             # do not require additional processing and
